@@ -8,17 +8,84 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            city: fake,
-            district: fake,
-            commune: fake,
+            city: [],
+            district: [],
+            commune: [],
+            idCity: 0,
+            idDistrict: 0,
         };
     }
 
-    
+    componentDidMount() {
+        const data = fake;
+        let arr_city = [];
+
+        Object.keys(data).map(function (key) {
+            let object = {};
+            object.key = data[key].key;
+            object.value = data[key].value.key;
+            arr_city.push(object);
+        });
 
 
-    handleSelectChange = () => {
+        if (arr_city.length > 0) {
+            console.log(arr_city);
+            this.setState({
+                city: [...arr_city]
+            });
 
+        }
+
+    }
+
+    getIDCityFromName = (name) => {
+        const city = this.state.city;
+        let IDCity = 0;
+        Object.keys(city).map(function (index) {
+            if (name === city[index].value) {
+                IDCity = city[index].key;
+                console.log(IDCity);
+            }
+        });
+        this.setState({
+            idCity: IDCity
+        });
+    }
+
+
+    handleSelectChangeCity = (e) => {
+        this.getIDCityFromName("Hà Nội");
+        console.log(this.state.idCity);
+        const data = fake;
+        let arr_district = [];
+        let { name, value } = e.target;
+
+        Object.keys(data).map(function (index) {
+            let object = {};
+            object.key = data[index].value.key;
+            object.value = data[index].value.value.key;
+
+            arr_district.push(object);
+        });
+
+        if (arr_district.length > 0) {
+            console.log(arr_district);
+            this.setState({
+                city: [...arr_district]
+            });
+        }
+    }
+
+    handleSelectChangeDistrict = (key) => {
+        this.setState(() => {
+            return {
+                commune: key
+            }
+        })
+    }
+
+    handleSelectChangeCommune = (key) => {
+        return 0;
     }
 
     render() {
@@ -30,10 +97,21 @@ class App extends Component {
 
         }
         return (
-            <div style = {container_style}>
-                <CustomSelect options={this.state.city}/>
-                <CustomSelect options={this.state.district} />
-                <CustomSelect options={this.state.commune} />
+            <div style={container_style}>
+                <CustomSelect
+                    options={this.state.city}
+                    id={this.state.idCity}
+                    handleSelectChange={this.handleSelectChangeCity}
+                />
+                <CustomSelect
+                    options={this.state.district}
+                    id={this.state.idDistrict}
+                    handleSelectChange={this.handleSelectChangeDistrict}
+                />
+                <CustomSelect
+                    options={this.state.commune}
+                    handleSelectChange={this.handleSelectChangeCommune}
+                />
             </div>
         )
     }
