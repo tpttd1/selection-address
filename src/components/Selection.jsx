@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Select from 'react-select'
 import fake from '../data/DataAddress.json';
-import makeAnimated from 'react-select/animated';
 
 
 let optionsCity = [];
@@ -35,6 +34,8 @@ class Selection extends Component {
         optionsDistrict = [];
         optionsCommune = [];
 
+        this.setState({ selectedOptionDistrict: null });
+        this.setState({ selectedOptionCommune: null });
         this.setState({ selectedOptionCity });
 
         const index = selectedOptionCity.value;
@@ -54,6 +55,7 @@ class Selection extends Component {
     handleChangeDistrict = selectedOptionDistrict => {
         optionsCommune = [];
 
+        this.setState({ selectedOptionCommune: null });
         this.setState({ selectedOptionDistrict });
         const index = this.state.selectedOptionCity.value;
 
@@ -75,8 +77,9 @@ class Selection extends Component {
 
     render() {
         const { selectedOptionCity } = this.state.city;
-        const { selectedOptionDistrict } = this.state.district;
-        const { selectedOptionCommune } = this.state.commune;
+        const { selectedOptionDistrict } = this.state;
+        const { selectedOptionCommune } = this.state;
+    
 
         const style_select = {
             width: "30%",
